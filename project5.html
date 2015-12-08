@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Project 5</title>
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./project5.js"></script>
+    <link rel="stylesheet" type="text/css" href="project5.css">
+</head>
+
+<body>
+    <h1>OkCorrelations</h1>
+    <h2>How are x and y correlated?</h2>
+
+    <div>
+        <svg id="viz" height="550" width="750"></svg>
+    </div>
+    
+    <div id="options">
+
+        <div style="float: left">
+            <select name="changeX">
+               <option value="" selected="true">Select an X variable!</option>
+               <option value="body">Body Type</option>
+               <option value="diet">Diet</option>
+               <option value="religion">Religion</option>
+               <option value="drinks">Drinking</option>
+               <option value="drugs">Drug Use</option>
+               <option value="education">Education</option>
+               <option value="ethnicity">Ethnicity</option>
+               <option value="height">Height</option>
+               <option value="income">Income</option>
+               <option value="job">Job</option>
+               <option value="offspring">Offspring</option>
+               <option value="orientation">Orientation</option>
+               <option value="pets">Pets</option>
+               <option value="religion">Religion</option>
+               <option value="sex">Sex</option>
+               <option value="smokes">Cigarette Use</option>
+               <option value="speaks">Languages</option>
+               <option value="wordcount">Profile Wordcount</option>
+            </select>
+        </div>
+
+        <div style="float: center">
+            <select name="changeY">
+               <option value="" selected="true">...and a Y variable!</option>
+               <option value="body">Body Type</option>
+               <option value="diet">Diet</option>
+               <option value="religion">Religion</option>
+               <option value="drinks">Drinking</option>
+               <option value="drugs">Drug Use</option>
+               <option value="education">Education</option>
+               <option value="ethnicity">Ethnicity</option>
+               <option value="height">Height</option>
+               <option value="income">Income</option>
+               <option value="job">Job</option>
+               <option value="offspring">Offspring</option>
+               <option value="orientation">Orientation</option>
+               <option value="pets">Pets</option>
+               <option value="religion">Religion</option>
+               <option value="sex">Sex</option>
+               <option value="smokes">Cigarette Use</option>
+               <option value="speaks">Languages</option>
+               <option value="wordcount">Profile Wordcount</option>
+            </select>
+        </div>
+
+    </div>
+
+    <p>Karina Chan and Jamie Christy, DataViz Fall 2015</p>
+
+</body>
+
+</html>

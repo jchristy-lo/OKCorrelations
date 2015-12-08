@@ -8,11 +8,10 @@ var GLOBAL = {
 function run() {
     d3.selectAll("svg")
 	    .append("text")
-		.attr("id","loading")
 		.attr("x",100)
 		.attr("y",150)
 		.attr("dy","0.35em")
-		.text("loading data...");
+		.text("Pick two variables to see their relationship!");
 
 	getDataRows(function(data) {
 	   GLOBAL.data = data;
