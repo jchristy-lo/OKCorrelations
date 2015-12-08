@@ -3,6 +3,11 @@ window.addEventListener("load", run);
 var GLOBAL = {
         data: [],
         color: ["blue","red","darkgrey","white","green"],
+        varTypes: {"body": "cat", "diet": "cat", "religion": "cat", "drinks": "cat", 
+               "drugs": "cat", "education": "cat", "ethnicity": "cat", "height": "cont", 
+               "income": "cont", "job": "cat", "offspring": "cat", "orientation": "cat", 
+               "pets": "cat", "religion": "cat", "sex": "cat", "smokes": "cat", 
+               "speaks": "cat", "wordcount": "cont"} //tags CATegorical or CONTinuous variables
 }
 
 function run() {
