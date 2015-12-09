@@ -1,6 +1,6 @@
-function initializeBarView(category, site, n, data) {
-
-    document.getElementById("label").innerHTML = category + " breakdown for " + site;
+function initializeBarView(category, ethnicity, n) {
+    var data = GLOBAL.data;
+    //   document.getElementById("label").innerHTML = category + " breakdown for " + ethnicity;
     var margin = {
             top: 20,
             right: 20,
@@ -56,31 +56,38 @@ function initializeBarView(category, site, n, data) {
     var y0 = 0;
     var count = 0
 
+
+    //do this on tab on
+
     data.forEach(function(d) {
         //console.log("group " + d.group)
-        count += 1;
-        //console.log(count + " iteration");
-        d.types = color.domain().map(function(group) {
-            //console.log(y0);
-            return {
-                name: d.group,
-                y0: y0,
-                y1: y0 += +d.value
-            };
-        });
-        if (count % n === 0) {
-            y0 = 0;
-        }
+        //console.log(d);
+        if (d.ethnicity != "") {
+            count += 1;
+            console.log(count + " iteration");
+            d.types = color.domain().map(function(group) {
+                console.log(y0);
+                return {
+                    name: d.group,
+                    y0: y0,
+                    y1: y0 += +d.value
+                };
+            });
 
-        //y0 += +d.value;
-        //console.log(d.types)
-        d.total = d.types[d.types.length - 1].y1;
+            if (count % n === 0) {
+                y0 = 0;
+            }
+
+            //y0 += +d.value;
+            //console.log(d.types)
+            d.total = d.types[d.types.length - 1].y1;
+        }
     });
 
 
 
     x.domain(data.map(function(d) {
-        return d.site;
+        return d.ethnicity;
     }));
     y.domain([0, d3.max(data, function(d) {
         return d.total;
@@ -101,15 +108,15 @@ function initializeBarView(category, site, n, data) {
         .style("text-anchor", "end")
         .text("Accumulated percentage of users (%)");
 
-    var site = svg.selectAll(".site")
+    var ethnicity = svg.selectAll(".ethnicity")
         .data(data)
         .enter().append("g")
         .attr("class", "g")
         .attr("transform", function(d) {
-            return "translate(" + x(d.site) + ",0)";
+            return "translate(" + x(d.ethnicity) + ",0)";
         });
 
-    site.selectAll("rect")
+    ethnicity.selectAll("rect")
         .data(function(d) {
             return d.types;
         })
@@ -157,10 +164,10 @@ function initializeBarView(category, site, n, data) {
 
 
 
-function updateStackBarView(category, site, n) {
-    document.getElementById("label").innerHTML = category + " breakdown for " + site;
+function updateStackBarView(category, ethnicity, n) {
+    document.getElementById("label").innerHTML = category + " breakdown for " + ethnicity;
     // setup button events
-    var data = getDataRows(category, site);
+    var data = getDataRows(category, ethnicity);
 
     var svg = d3.select("#viz");
 
@@ -171,7 +178,7 @@ function updateStackBarView(category, site, n) {
     // update the title
 
     svg.select(".title")
-        .text("Site: " + site);
+        .text("ethnicity: " + ethnicity);
 
     // bind the data to the <g> elements representing each group
 
@@ -203,12 +210,12 @@ function updateStackBarView(category, site, n) {
             return d.value + "%";
         });
 
-    initializeBarView(category, site, n, data);
+    initializeBarView(category, ethnicity, n, data);
 }
 
-function updateBarView(category, site, n) {
-    document.getElementById("label").innerHTML = category + " breakdown for " + site;
-    var data = getDataRows(category, site);
+function updateBarView(category, ethnicity, n) {
+    document.getElementById("label").innerHTML = category + " breakdown for " + ethnicity;
+    var data = getDataRows(category, ethnicity);
     var margin = {
             top: 20,
             right: 20,
