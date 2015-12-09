@@ -31,7 +31,7 @@ function tabOn (xvar, yvar){
 				console.log("A");
 				GLOBAL.tabbedData[profY[profX]] += 1;
 			}else{
-				console.log("B");
+				console.log("B, "+GLOBAL.tabbedData[profY]);
 				GLOBAL.tabbedData[profY[profX]] = 1;
 			}
 		}else{
