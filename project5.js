@@ -45,20 +45,16 @@ function tabOn (xvar, yvar){
 	GLOBAL.data.forEach(function (profile) {
 		var profY = profile[yvar];
 		var profX = profile[xvar];
-		// console.log("x is "+profX+", y is "+profY);
 		if (profY != "" & profX != "" & profY != undefined & profX != undefined){
 		if(profY in GLOBAL.tabbedData){
 			if(profX in GLOBAL.tabbedData[profY]){
-				console.log("A");
-				GLOBAL.tabbedData[profY[profX]] += 1;
+				GLOBAL.tabbedData[profY][profX] += 1;
 			}else{
-				console.log("B, "+GLOBAL.tabbedData[profY]);
-				GLOBAL.tabbedData[profY[profX]] = 1;
+				GLOBAL.tabbedData[profY][profX] = 1;
 			}
 		}else{
-			console.log("C");
 			GLOBAL.tabbedData[profY] = {};
-			GLOBAL.tabbedData[profY[profX]] = 1;
+			GLOBAL.tabbedData[profY][profX] = 1;
 		}}
     });
 
