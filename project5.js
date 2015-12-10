@@ -61,69 +61,68 @@ function tabOn (xvar, yvar){
 }
 
 function scatterPlot(xvar, yvar) {
+	var svg = d3.select("#viz");	
+	d3.selectAll("#viz > *").remove();
 
-var svg = d3.select("#viz");
-d3.selectAll("#viz > *").remove();
+	var margin = {top: 50, right: 50, bottom: 70, left: 60},
+		chartW = svg.attr("width") - margin.left - margin.right,
+		chartH = svg.attr("height") - margin.top - margin.bottom;
 
-var margin = {top: 50, right: 50, bottom: 70, left: 50},
-	chartW = svg.attr("width") - margin.left - margin.right,
-	chartH = svg.attr("height") - margin.top - margin.bottom;
+	var xdata = [],
+	    ydata = [];
 
-var xdata = [],
-    ydata = [];
+	var y = function(val){return (chartH-chartH/d3.max(ydata)*(+val)+margin.top);}
+	var x = function(val){return d3.max([0,chartW/d3.max(xdata)*(+val)+margin.left]);}
 
-GLOBAL.data.forEach(function (profile) {
-	var profY = profile[yvar],
-		profX = profile[xvar];
+	GLOBAL.data.forEach(function (profile) {
+		var profY = profile[yvar],
+			profX = profile[xvar];
 
-if ($.isNumeric(profY) & $.isNumeric(profX)){
-	// if (profY != "" & profX != "" & profY != undefined & profX != undefined & profY != -1 & profX != -1){
-		xdata.push(+profX);
-		ydata.push(+profY);
-	}
-});
+		if (profY != "" & profX != "" & profY != undefined & profX != undefined & profY != -1 & profX != -1 & profY != NaN & profX != NaN ){
+			xdata.push(+profX);
+			ydata.push(+profY);
+		}
+	});
 
-// x and y scales, I've used linear here but there are other options
-// the scales translate data values to pixel values for you
-var x = d3.scale.linear()
-          .domain([0, d3.max(xdata)])  // the range of the values to plot
-          // .range([0, chartW]);        // the pixel range of the x-axis
+	var i = 0;
+	xdata.forEach(function (datum) {
+	var g = svg.append("circle")
+		.attr("class","scatter-dots")
+	  	.attr("cy", y(ydata[i]))
+	  	.attr("cx", x(datum))
+	  	.attr("r", 5) // radius of circle
+		.style("fill","blue")
+		.style("stroke","none")
+		.style("opacity",0.2);
+	i += 1;
+	});
 
-var y = d3.scale.linear()
-          .domain([0, d3.max(ydata)])
-          // .range([ chartH, margin.bottom ]);
+	var xScale = d3.scale.linear()
+		.domain([0,d3.max(xdata)])
+		.range([margin.left,margin.left+chartW]);
 
-// draw the x axis
-var xAxis = d3.svg.axis()
-	.scale(x)
-	.orient('bottom');
+	var xAxis = d3.svg.axis();
+	xAxis.orient("bottom")
+		.scale(xScale);
 
-svg.append('g')
-	.attr('transform', 'translate(0,' + chartH + ')')
-	.attr('class', 'main axis date')
-	.call(xAxis);
+	svg.append("g")
+		.attr("class", "axis")
+		.attr("transform", "translate(0," + (chartH + margin.top) + ")")
+	    .call(xAxis);
 
-// draw the y axis
-var yAxis = d3.svg.axis()
-	.scale(y)
-	.orient('left');
+	var yScale = d3.scale.linear()
+		.domain([0,d3.max(ydata)])
+		.range([margin.bottom+chartH,margin.bottom]);
 
-svg.append('g')
-	.attr('transform', 'translate('+margin.left+',0)')
-	.attr('class', 'main axis date')
-	.call(yAxis);
+	var yAxis = d3.svg.axis();
+	yAxis.orient("left")
+		.scale(yScale);
 
-// draw the graph object
-var g = svg.append("svg:g"); 
+	svg.append("g")
+		.attr("class", "axis")
+		.attr("transform", "translate("+margin.left+",-"+(margin.bottom-margin.top)+")")
+	    .call(yAxis);
 
-g.selectAll("scatter-dots")
-  .data(ydata)  // using the values in the ydata array
-  .enter().append("svg:circle")  // create a new circle for each value
-      .attr("cy", function (d) { return y(d); } ) // translate y value to a pixel
-      .attr("cx", function (d,i) { return x(xdata[i]); } ) // translate x value
-      .attr("r", 5) // radius of circle
-      .style("color", GLOBAL.colors[i])
-      .style("opacity", 0.9); // opacity of circle
 }
 
 function getWordcount() {
@@ -140,10 +139,10 @@ function getWordcount() {
 }
 
 function sortType(xvar, yvar) {
-    tabOn(xvar, yvar);
     if (GLOBAL.varTypes[xvar] === "cont" & GLOBAL.varTypes[yvar] === "cont") {
         scatterPlot(xvar, yvar);
     } else {
+    	tabOn(xvar,yvar);
     }
 }
 

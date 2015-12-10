@@ -2,3 +2,16 @@ body{
 	background-color: #F6F6F6;
 	text-align: center;
 }
+
+svg text {
+  font-family: serif;
+  font-size: 12px;
+  fill: black;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
