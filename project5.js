@@ -31,7 +31,6 @@ var GLOBAL = {
 
 function run() {
     noSelected();
-
     getDataRows(function(data) {
         GLOBAL.data = data;
         getWordcount();
@@ -67,16 +66,14 @@ function scatterPlot(xvar, yvar) {
 
 function getWordcount() {
     GLOBAL.data.forEach(function(profile) {
-        if (profile.yvar in GLOBAL.tabbedData) {
-            if (profile.xvar in GLOBAL.tabbedData.yvar) {
-                GLOBAL.tabbedData.yvar.xvar = +1;
-            } else {
-                GLOBAL.tabbedData.yvar.xvar = 1;
-            }
-        } else {
-            GLOBAL.tabbedData.yvar = {};
-            GLOBAL.tabbedData.yvar.xvar = +1;
-        }
+    	profile["allEssays"] = profile["essay0"] + profile["essay1"] + profile["essay2"] + profile["essay3"] + profile["essay5"] + profile["essay6"] + profile["essay7"] + profile["essay8"]; 
+
+    	profile["allEssays"] = profile["allEssays"].split("<br />").join(" ")
+    		.replace(/[\+.\-()!\/\\?]/g, ' ')
+    		.replace(/[:;,']/g, '')
+    		.trim()
+    		.replace(/ +/g, ' ');
+    	profile["wordcount"] = profile["allEssays"].split(' ').length;
     });
 }
 
@@ -84,6 +81,7 @@ function sortType(xvar, yvar) {
     tabOn(xvar, yvar);
     if (GLOBAL.varTypes[xvar] === "cont" & GLOBAL.varTypes[yvar] === "cont") {
         scatterPlot(xvar, yvar);
+    } else {
     }
 }
 
