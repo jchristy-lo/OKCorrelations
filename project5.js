@@ -36,7 +36,7 @@ function run() {
         getWordcount();
 
     });
-    initializeBarView();
+    // initializeBarView();
 }
 
 function tabOn (xvar, yvar){
@@ -62,6 +62,68 @@ function tabOn (xvar, yvar){
 
 function scatterPlot(xvar, yvar) {
 
+var svg = d3.select("#viz");
+d3.selectAll("#viz > *").remove();
+
+var margin = {top: 50, right: 50, bottom: 70, left: 50},
+	chartW = svg.attr("width") - margin.left - margin.right,
+	chartH = svg.attr("height") - margin.top - margin.bottom;
+
+var xdata = [],
+    ydata = [];
+
+GLOBAL.data.forEach(function (profile) {
+	var profY = profile[yvar],
+		profX = profile[xvar];
+
+if ($.isNumeric(profY) & $.isNumeric(profX)){
+	// if (profY != "" & profX != "" & profY != undefined & profX != undefined & profY != -1 & profX != -1){
+		xdata.push(+profX);
+		ydata.push(+profY);
+	}
+});
+
+// x and y scales, I've used linear here but there are other options
+// the scales translate data values to pixel values for you
+var x = d3.scale.linear()
+          .domain([0, d3.max(xdata)])  // the range of the values to plot
+          // .range([0, chartW]);        // the pixel range of the x-axis
+
+var y = d3.scale.linear()
+          .domain([0, d3.max(ydata)])
+          // .range([ chartH, margin.bottom ]);
+
+// draw the x axis
+var xAxis = d3.svg.axis()
+	.scale(x)
+	.orient('bottom');
+
+svg.append('g')
+	.attr('transform', 'translate(0,' + chartH + ')')
+	.attr('class', 'main axis date')
+	.call(xAxis);
+
+// draw the y axis
+var yAxis = d3.svg.axis()
+	.scale(y)
+	.orient('left');
+
+svg.append('g')
+	.attr('transform', 'translate('+margin.left+',0)')
+	.attr('class', 'main axis date')
+	.call(yAxis);
+
+// draw the graph object
+var g = svg.append("svg:g"); 
+
+g.selectAll("scatter-dots")
+  .data(ydata)  // using the values in the ydata array
+  .enter().append("svg:circle")  // create a new circle for each value
+      .attr("cy", function (d) { return y(d); } ) // translate y value to a pixel
+      .attr("cx", function (d,i) { return x(xdata[i]); } ) // translate x value
+      .attr("r", 5) // radius of circle
+      .style("color", GLOBAL.colors[i])
+      .style("opacity", 0.9); // opacity of circle
 }
 
 function getWordcount() {
@@ -69,7 +131,7 @@ function getWordcount() {
     	profile["allEssays"] = profile["essay0"] + profile["essay1"] + profile["essay2"] + profile["essay3"] + profile["essay5"] + profile["essay6"] + profile["essay7"] + profile["essay8"]; 
 
     	profile["allEssays"] = profile["allEssays"].split("<br />").join(" ")
-    		.replace(/[\+.\-()!\/\\?]/g, ' ')
+    		.replace(/[\+.\-()!\/\\?\n]/g, ' ')
     		.replace(/[:;,']/g, '')
     		.trim()
     		.replace(/ +/g, ' ');
