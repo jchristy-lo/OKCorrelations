@@ -4,6 +4,7 @@ var GLOBAL = {
     data: [],
     color: ["blue", "red", "darkgrey", "white", "green"],
     varTypes: {
+    	"age": "cont",
         "body": "cat",
         "diet": "cat",
         "religion": "cat",
@@ -23,20 +24,21 @@ var GLOBAL = {
         "speaks": "cat",
         "wordcount": "cont"
     }, //tags CATegorical or CONTinuous variables
-    ySelect: "",
-    xSelect: "",
+    ySelect: "income",
+    xSelect: "age",
     tabbedData: {}
 
 }
 
 function run() {
-    noSelected();
     getDataRows(function(data) {
+    	d3.select("#viz")
+    		.append("text")
+    		.text("LOADING!");
         GLOBAL.data = data;
         getWordcount();
-
+        scatterPlot("age","income");
     });
-    // initializeBarView();
 }
 
 function tabOn (xvar, yvar){
@@ -64,15 +66,15 @@ function scatterPlot(xvar, yvar) {
 	var svg = d3.select("#viz");	
 	d3.selectAll("#viz > *").remove();
 
-	var margin = {top: 50, right: 50, bottom: 70, left: 60},
+	var margin = {top: 50, right: 50, bottom: 70, left: 70},
 		chartW = svg.attr("width") - margin.left - margin.right,
 		chartH = svg.attr("height") - margin.top - margin.bottom;
 
 	var xdata = [],
 	    ydata = [];
 
-	var y = function(val){return (chartH-chartH/d3.max(ydata)*(+val)+margin.top);}
-	var x = function(val){return d3.max([0,chartW/d3.max(xdata)*(+val)+margin.left]);}
+	var y = function(val){return chartH-chartH/d3.max(ydata)*val+margin.top;}
+	var x = function(val){return d3.max([margin.left,chartW/(d3.max(xdata))*(+val)+margin.left]);}
 
 	GLOBAL.data.forEach(function (profile) {
 		var profY = profile[yvar],
@@ -91,9 +93,9 @@ function scatterPlot(xvar, yvar) {
 	  	.attr("cy", y(ydata[i]))
 	  	.attr("cx", x(datum))
 	  	.attr("r", 5) // radius of circle
-		.style("fill","blue")
+		.style("fill","#104DA1")
 		.style("stroke","none")
-		.style("opacity",0.2);
+		.style("opacity",0.1);
 	i += 1;
 	});
 
@@ -123,6 +125,15 @@ function scatterPlot(xvar, yvar) {
 		.attr("transform", "translate("+margin.left+",-"+(margin.bottom-margin.top)+")")
 	    .call(yAxis);
 
+	svg.append("text")
+		.attr("x",svg.attr("width")/2)
+		.attr("y",svg.attr("height")-20)
+		.text(GLOBAL.xSelect);
+
+	svg.append("text")
+		.attr("transform", "translate(10,225)rotate(-90)")
+		.text(GLOBAL.ySelect);
+
 }
 
 function getWordcount() {
@@ -146,35 +157,16 @@ function sortType(xvar, yvar) {
     }
 }
 
-function noSelected() {
-    var viz = d3.select("#viz")
-    viz.append("text")
-        .attr("x", 100)
-        .attr("y", 150)
-        .attr("dy", "0.35em")
-        .text("Pick two variables to see their relationship!");
-}
-
 function updateX(selection) {
     selection = selection.value
     GLOBAL.xSelect = selection;
-
-    if (selection === "" | GLOBAL.ySelect === "") {
-        noSelected;
-    } else {
-        sortType(selection, GLOBAL.ySelect)
-    }
+    sortType(selection, GLOBAL.ySelect)
 }
 
 function updateY(selection) {
     selection = selection.value
     GLOBAL.ySelect = selection;
-
-    if (selection === "" | GLOBAL.xSelect === "") {
-        noSelected;
-    } else {
-        sortType(GLOBAL.xSelect, selection)
-    }
+    sortType(GLOBAL.xSelect, selection)
 }
 
 function getDataRows(f) {

@@ -13,62 +13,54 @@
 
 <body>
     <h1>OkCorrelations</h1>
-    <h2>How are x and y correlated?</h2>
-
-    <div>
+    <div id="whitebox">
+    <h2>How are
+        <select name="changeX" onchange="updateX(this)">
+           <option value="age" selected="true"> Age</option>
+           <option value="body">Body Type</option>
+           <option value="diet">Diet</option>
+           <option value="religion">Religion</option>
+           <option value="drinks">Drinking</option>
+           <option value="drugs">Drug Use</option>
+           <option value="education">Education</option>
+           <option value="ethnicity">Ethnicity</option>
+           <option value="height">Height</option>
+           <option value="income">Income</option>
+           <option value="job">Job</option>
+           <option value="offspring">Offspring</option>
+           <option value="orientation">Orientation</option>
+           <option value="pets">Pets</option>
+           <option value="religion">Religion</option>
+           <option value="sex">Sex</option>
+           <option value="smokes">Cigarette Use</option>
+           <option value="speaks">Languages</option>
+           <option value="wordcount">Profile Wordcount</option>
+        </select>
+        and
+        <select name="changeY" onchange="updateY(this)">
+           <option value="age"> Age</option>
+           <option value="body">Body Type</option>
+           <option value="diet">Diet</option>
+           <option value="religion">Religion</option>
+           <option value="drinks">Drinking</option>
+           <option value="drugs">Drug Use</option>
+           <option value="education">Education</option>
+           <option value="ethnicity">Ethnicity</option>
+           <option value="height">Height</option>
+           <option value="income" selected="true">Income</option>
+           <option value="job">Job</option>
+           <option value="offspring">Offspring</option>
+           <option value="orientation">Orientation</option>
+           <option value="pets">Pets</option>
+           <option value="religion">Religion</option>
+           <option value="sex">Sex</option>
+           <option value="smokes">Cigarette Use</option>
+           <option value="speaks">Languages</option>
+           <option value="wordcount">Profile Wordcount</option>
+        </select>
+        correlated?</h2>
+        
         <svg id="viz" height="550" width="750"></svg>
-    </div>
-    
-    <div id="options">
-
-        <div style="float: left" margin="50px">
-            <select name="changeX" onchange="updateX(this)">
-               <option value="" selected="true">Select an X variable!</option>
-               <option value="body">Body Type</option>
-               <option value="diet">Diet</option>
-               <option value="religion">Religion</option>
-               <option value="drinks">Drinking</option>
-               <option value="drugs">Drug Use</option>
-               <option value="education">Education</option>
-               <option value="ethnicity">Ethnicity</option>
-               <option value="height">Height</option>
-               <option value="income">Income</option>
-               <option value="job">Job</option>
-               <option value="offspring">Offspring</option>
-               <option value="orientation">Orientation</option>
-               <option value="pets">Pets</option>
-               <option value="religion">Religion</option>
-               <option value="sex">Sex</option>
-               <option value="smokes">Cigarette Use</option>
-               <option value="speaks">Languages</option>
-               <option value="wordcount">Profile Wordcount</option>
-            </select>
-        </div>
-
-        <div style="float: center">
-            <select name="changeY" onchange="updateY(this)">
-               <option value="" selected="true">...and a Y variable!</option>
-               <option value="body">Body Type</option>
-               <option value="diet">Diet</option>
-               <option value="religion">Religion</option>
-               <option value="drinks">Drinking</option>
-               <option value="drugs">Drug Use</option>
-               <option value="education">Education</option>
-               <option value="ethnicity">Ethnicity</option>
-               <option value="height">Height</option>
-               <option value="income">Income</option>
-               <option value="job">Job</option>
-               <option value="offspring">Offspring</option>
-               <option value="orientation">Orientation</option>
-               <option value="pets">Pets</option>
-               <option value="religion">Religion</option>
-               <option value="sex">Sex</option>
-               <option value="smokes">Cigarette Use</option>
-               <option value="speaks">Languages</option>
-               <option value="wordcount">Profile Wordcount</option>
-            </select>
-        </div>
-
     </div>
 
     <p>Karina Chan and Jamie Christy, DataViz Fall 2015</p>

@@ -1,9 +1,3 @@
-sp axes
-sp axes labels
-allow x/y switch (switch to radiobuttons?)
-update title to reflect variables
-switch layout to ditch scrolling
 add interactivity
 allow sp zooming?
-switch drinking, age, education, drugs... to continuous (pseudo-continuous)
-make svg bg white
+switch drinking, education, drugs... to continuous (pseudo-continuous)
