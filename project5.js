@@ -43,9 +43,6 @@ function run() {
 
 }
 
-function toggleZoom(){
-}
-
 function tabOn(xvar, yvar) {
     GLOBAL.tabbedData = {};
     GLOBAL.data.forEach(function(profile) {
@@ -68,7 +65,6 @@ function tabOn(xvar, yvar) {
 }
 
 function scatterPlot(xvar, yvar) {
-	document.getElementById("zoomer").style.display = "none";
     var svg = d3.select("#viz");
     d3.selectAll("#viz > *").remove();
 
@@ -168,12 +164,10 @@ function sortType(xvar, yvar) {
     if (GLOBAL.varTypes[xvar] === "cont" & GLOBAL.varTypes[yvar] === "cont") {
         scatterPlot(xvar, yvar);
     } else if (GLOBAL.varTypes[xvar] === "cat" & GLOBAL.varTypes[yvar] === "cont") {
-    	document.getElementById("zoomer").style.display = "inline";
     	GLOBAL.xSelect = yvar;
     	GLOBAL.ySelect = xvar;
         tabOn(yvar, xvar, false);
     } else {
-    	document.getElementById("zoomer").style.display = "inline";
     	tabOn(xvar, yvar, false);
     }
 }

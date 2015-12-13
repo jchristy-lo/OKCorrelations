@@ -124,6 +124,8 @@ function initializeBarView(category1, category2, zoom) {
     //     })
     // });
 
+
+
     // show the domains of the scales              
     console.log("x.domain(): " + x.domain())
     console.log("y.domain(): " + y.domain())
