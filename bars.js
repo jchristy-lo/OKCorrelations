@@ -1,20 +1,48 @@
-function initializeBarView(category, ethnicity, n) {
-    var data = GLOBAL.data;
+function initializeBarView(category1, category2) {
+    var data = GLOBAL.tabbedData;
     //   document.getElementById("label").innerHTML = category + " breakdown for " + ethnicity;
+
+
+    var svg = d3.select("#viz");
+    d3.selectAll("#viz > *").remove();
+
+
+
+
+    // // create canvas
+    // // var svg = d3.select("#viz").append("svg:svg")
+    // //     .attr("class", "chart")
+    // //     .attr("width", chartW)
+    // //     .attr("height", chartH)
+    // //     .append("svg:g")
+    // //     .attr("transform", "translate(10,470)");
+
+    // // x = d3.scale.ordinal().rangeRoundBands([0, chartW - 50])
+    // // y = d3.scale.linear().range([0, chartH - 50])
+
+    // var x = d3.scale.ordinal()
+    //     .rangeRoundBands([0, chartW], .1);
+
+    // var y = d3.scale.linear()
+    //     .rangeRound([chartH, 0]);
+    // z = d3.scale.ordinal().range(["darkblue", "blue", "lightblue"])
+
     var margin = {
             top: 20,
             right: 20,
             bottom: 30,
             left: 40
         },
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        chartW = 960 - margin.left - margin.right,
+        chartH = 500 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
-        .rangeRoundBands([0, width], .1);
+        .rangeRoundBands([0, chartW]);
 
     var y = d3.scale.linear()
-        .rangeRound([height, 0]);
+        .rangeRound([chartH, 0]);
+
+
 
     var color = d3.scale.ordinal()
         .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
@@ -29,73 +57,77 @@ function initializeBarView(category, ethnicity, n) {
         .tickFormat(d3.format(".2s"));
 
     var svg = d3.select("#viz")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("width", chartW + margin.left + margin.right)
+        .attr("height", chartH + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-    // var data = getDataRows(category);
-
-    color.domain(function(d) {
-        if (d.group !== undefined)
-            return d.group
-    });
-
-
-    var count = 0;
-    /*
-  data.forEach(function(d) {
-    d.y0 = count;
-    d.y1 = d.value+d.y0;
-    count = d.y1;
-    d.race = color.domain().map(function(value) { return {value: value, y0: y0, y1: y0 += d.value}; });
-    d.total = d.race[d.race.length - 1].y1;
-    //console.log("race" + d.race[2].y0);
-  });*/
-    var y0 = 0;
-    var count = 0
-
-
-    //do this on tab on
-
-    data.forEach(function(d) {
-        //console.log("group " + d.group)
-        //console.log(d);
-        if (d.ethnicity != "") {
-            count += 1;
-            console.log(count + " iteration");
-            d.types = color.domain().map(function(group) {
-                console.log(y0);
-                return {
-                    name: d.group,
-                    y0: y0,
-                    y1: y0 += +d.value
-                };
+    var remap = new Array();
+    //this is the remapping
+    for (key in data) {
+        // console.log(key);
+        // console.log("prev: ");
+        // console.log(data[key]);
+        var prev = 0;
+        for (cat in data[key]) {
+            var val = data[key][cat];
+            // data[key][cat] = {
+            //     "x": key,
+            //     "y0": prev,
+            //     "y1": val + prev
+            // };
+            remap.push({
+                "x": Object.keys(data).indexOf(key),
+                "key": key,
+                "y0": prev,
+                "y1": val + prev,
+                "category": cat
             });
-
-            if (count % n === 0) {
-                y0 = 0;
-            }
-
-            //y0 += +d.value;
-            //console.log(d.types)
-            d.total = d.types[d.types.length - 1].y1;
+            prev = val + prev;
         }
-    });
+        // console.log("post: ");
+        // console.log(data[key]);
+    }
 
-
-
-    x.domain(data.map(function(d) {
-        return d.ethnicity;
+    x.domain(remap.map(function(d) {
+        return d.site;
     }));
-    y.domain([0, d3.max(data, function(d) {
-        return d.total;
+    y.domain([0, d3.max(remap, function(d) {
+        return d.y1;
     })]);
+    // var remapped = Object.keys(data).map(function(dat, i) {
+    //     return Object.keys(data).map(function(d, ii) {
+    //         return {
+    //             x: ii,
+    //             y: d[i + 1]
+    //         };
+    //     })
+    // });
+
+
+
+    // show the domains of the scales              
+    console.log("x.domain(): " + x.domain())
+    console.log("y.domain(): " + y.domain())
+    console.log("------------------------------------------------------------------");
+
+
+    var color = d3.scale.ordinal()
+        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
+
 
     svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
+        .attr("transform", "translate(0," + chartH + ")")
         .call(xAxis);
 
     svg.append("g")
@@ -108,57 +140,54 @@ function initializeBarView(category, ethnicity, n) {
         .style("text-anchor", "end")
         .text("Accumulated percentage of users (%)");
 
-    var ethnicity = svg.selectAll(".ethnicity")
-        .data(data)
-        .enter().append("g")
-        .attr("class", "g")
-        .attr("transform", function(d) {
-            return "translate(" + x(d.ethnicity) + ",0)";
-        });
 
-    ethnicity.selectAll("rect")
-        .data(function(d) {
-            return d.types;
-        })
-        .enter().append("rect")
-        .attr("width", x.rangeBand())
-        .attr("y", function(d) {
-            //console.log("Here " + y(d.y1));
-            return y(d.y1);
-        })
-        .attr("height", function(d) {
-            return y(d.y0) - y(d.y1);
-        })
-        .style("fill", function(d) {
-            return color(d.name);
-        });
+    for (val in remap) {
 
-    //So sorry for this.
-    var array = color.domain().slice().reverse();
-    array.pop();
+        var spacing = remap[val].x * 100;
 
-    var legend = svg.selectAll(".legend")
-        .data(array)
-        .enter().append("g")
-        .attr("class", "legend")
-        .attr("transform", function(d, i) {
-            return "translate(0," + i * 20 + ")";
-        });
+        var length = remap[val].y0 - remap[val].y1;
+        console.log(svg);
+        var category = svg
+            .append("g")
+            .attr("class", "g")
+            .attr("transform", "translate(" + spacing + ",0)");
 
-    legend.append("rect")
-        .attr("x", width - 18)
-        .attr("width", 18)
-        .attr("height", 18)
-        .style("fill", color);
+        category
+            .append("rect")
+            .attr("width", 100)
+            .attr("y", remap[val].y0)
+            .attr("height", length * -1)
+            .style("fill", function() {
+                return GLOBAL.color[val];
+            });
 
-    legend.append("text")
-        .attr("x", width - 24)
-        .attr("y", 9)
-        .attr("dy", ".35em")
-        .style("text-anchor", "end")
-        .text(function(d) {
-            return d;
-        });
+    }
+    // //So sorry for this.
+    // var array = color.domain().slice().reverse();
+    // array.pop();
+
+    // var legend = svg.selectAll(".legend")
+    //     .data(array)
+    //     .enter().append("g")
+    //     .attr("class", "legend")
+    //     .attr("transform", function(d, i) {
+    //         return "translate(0," + i * 20 + ")";
+    //     });
+
+    // legend.append("rect")
+    //     .attr("x", chartW - 18)
+    //     .attr("width", 18)
+    //     .attr("height", 18)
+    //     .style("fill", color);
+
+    // legend.append("text")
+    //     .attr("x", chartW - 24)
+    //     .attr("y", 9)
+    //     .attr("dy", ".35em")
+    //     .style("text-anchor", "end")
+    //     .text(function(d) {
+    //         return d;
+    //     });
 
 }
 
