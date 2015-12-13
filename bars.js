@@ -28,19 +28,19 @@ function initializeBarView(category1, category2) {
     // z = d3.scale.ordinal().range(["darkblue", "blue", "lightblue"])
 
     var margin = {
-            top: 20,
-            right: 20,
-            bottom: 30,
-            left: 40
+            top: 50,
+            right: 50,
+            bottom: 70,
+            left: 70
         },
-        chartW = 960 - margin.left - margin.right,
-        chartH = 500 - margin.top - margin.bottom;
+        chartW = svg.attr("width") - margin.left - margin.right,
+        chartH = svg.attr("height") - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
         .rangeRoundBands([0, chartW]);
 
     var y = d3.scale.linear()
-        .rangeRound([chartH, 0]);
+        .range([chartH, 0]);
 
 
 
@@ -53,8 +53,7 @@ function initializeBarView(category1, category2) {
 
     var yAxis = d3.svg.axis()
         .scale(y)
-        .orient("left")
-        .tickFormat(d3.format(".2s"));
+        .orient("left");
 
     var svg = d3.select("#viz")
         .attr("width", chartW + margin.left + margin.right)
@@ -63,6 +62,22 @@ function initializeBarView(category1, category2) {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
+    var totals = [];
+    for (key in data) { //loop through to accumulate the total values
+        // console.log(key);
+        // console.log("prev: ");
+        // console.log(data[key]);
+        var tot = 0;
+        var countCat = 0;
+        for (cat in data[key]) {
+            var val = data[key][cat];
+            tot = val + tot;
+        }
+        totals[key] = tot; //it totals into an array
+        // console.log("post: ");
+        // console.log(data[key]);
+    }
+
     var remap = new Array();
     //this is the remapping
     for (key in data) {
@@ -70,8 +85,11 @@ function initializeBarView(category1, category2) {
         // console.log("prev: ");
         // console.log(data[key]);
         var prev = 0;
+        var countCat = 0;
         for (cat in data[key]) {
-            var val = data[key][cat];
+            var val = (data[key][cat] / totals[key]) * 100;
+            console.log(val);
+            console.log(totals[key]);
             // data[key][cat] = {
             //     "x": key,
             //     "y0": prev,
@@ -82,14 +100,16 @@ function initializeBarView(category1, category2) {
                 "key": key,
                 "y0": prev,
                 "y1": val + prev,
-                "category": cat
+                "category": cat,
+                "iden": countCat
             });
+            countCat = countCat + 1;
             prev = val + prev;
         }
         // console.log("post: ");
         // console.log(data[key]);
     }
-
+    console.log(remap);
     x.domain(remap.map(function(d) {
         return d.site;
     }));
@@ -145,7 +165,7 @@ function initializeBarView(category1, category2) {
 
         var spacing = remap[val].x * 100;
 
-        var length = remap[val].y0 - remap[val].y1;
+        var length = y(remap[val].y0) - y(remap[val].y1);
         console.log(svg);
         var category = svg
             .append("g")
@@ -155,10 +175,10 @@ function initializeBarView(category1, category2) {
         category
             .append("rect")
             .attr("width", 100)
-            .attr("y", remap[val].y0)
-            .attr("height", length * -1)
+            .attr("y", y(remap[val].y1))
+            .attr("height", length)
             .style("fill", function() {
-                return GLOBAL.color[val];
+                return color(remap[val].iden);
             });
 
     }
