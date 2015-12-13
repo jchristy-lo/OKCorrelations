@@ -1,4 +1,4 @@
-function initializeBarView(category1, category2) {
+function initializeBarView(category1, category2, zoom) {
     var data = GLOBAL.tabbedData;
     //   document.getElementById("label").innerHTML = category + " breakdown for " + ethnicity;
 
@@ -44,8 +44,9 @@ function initializeBarView(category1, category2) {
 
 
 
-    var color = d3.scale.ordinal()
-        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+    var color = d3.scale.category20c();
+    //d3.scale.ordinal()
+    //    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
     var xAxis = d3.svg.axis()
         .scale(x)
@@ -87,7 +88,11 @@ function initializeBarView(category1, category2) {
         var prev = 0;
         var countCat = 0;
         for (cat in data[key]) {
-            var val = (data[key][cat] / totals[key]) * 100;
+            if (zoom) {
+                var val = (data[key][cat] / totals[key]) * 100;
+            } else {
+                var val = data[key][cat];
+            }
             console.log(val);
             console.log(totals[key]);
             // data[key][cat] = {
@@ -179,6 +184,9 @@ function initializeBarView(category1, category2) {
             .attr("height", length)
             .style("fill", function() {
                 return color(remap[val].iden);
+            })
+            .on("click", function() {
+                initializeBarView(category1, category2, !zoom);
             });
 
     }
