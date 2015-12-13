@@ -31,16 +31,18 @@ var GLOBAL = {
 }
 
 function run() {
+    d3.select("#loading")
+        .append("text")
+        .text("LOADING!");
     getDataRows(function(data) {
-        d3.select("#viz")
-            .append("text")
-            .text("LOADING!");
+
         GLOBAL.data = data;
         getWordcount();
-        //scatterPlot("age", "income");
+        scatterPlot("age", "income");
+        document.getElementById("loading").style.display = "none";
+
     });
-    tabOn("drugs", "drinks");
-    initializeBarView("drugs", "drinks");
+
 }
 
 function tabOn(xvar, yvar) {
@@ -63,9 +65,11 @@ function tabOn(xvar, yvar) {
     });
 
     console.log(GLOBAL.tabbedData);
+    initializeBarView(xvar, yvar, false); //not zoom
 }
 
 function scatterPlot(xvar, yvar) {
+
     var svg = d3.select("#viz");
     d3.selectAll("#viz > *").remove();
 
@@ -163,12 +167,13 @@ function getWordcount() {
 
 function sortType(xvar, yvar) {
     if (GLOBAL.varTypes[xvar] === "cont" & GLOBAL.varTypes[yvar] === "cont") {
-        // scatterPlot(xvar, yvar);
+        scatterPlot(xvar, yvar);
     } else {
         tabOn(xvar, yvar);
-        initializeBarView(xvar, yvar);
+
     }
 }
+
 
 function updateX(selection) {
     selection = selection.value
