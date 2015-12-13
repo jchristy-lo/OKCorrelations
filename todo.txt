@@ -1,3 +1,6 @@
 add interactivity
 allow sp zooming?
 switch drinking, education, drugs... to continuous (pseudo-continuous)
+
+for bars can we geet the accum % label on the other side
+of the axis? it gets cut off...

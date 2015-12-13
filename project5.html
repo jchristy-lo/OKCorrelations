@@ -16,7 +16,7 @@
     <h2>How are
         <select name="changeX" onchange="updateX(this)">
            <option value="age" selected="true"> Age</option>
-           <option value="body">Body Type</option>
+           <!-- <option value="body">Body Type</option> -->
            <option value="diet">Diet</option>
            <option value="religion">Religion</option>
            <option value="drinks">Drinking</option>
@@ -38,7 +38,7 @@
         and
         <select name="changeY" onchange="updateY(this)">
            <option value="age"> Age</option>
-           <option value="body">Body Type</option>
+           <!-- <option value="body">Body Type</option> -->
            <option value="diet">Diet</option>
            <option value="religion">Religion</option>
            <option value="drinks">Drinking</option>
@@ -58,6 +58,7 @@
            <option value="wordcount">Profile Wordcount</option>
         </select>
         correlated?</h2>
+        <button id="zoomer" display="none" onclick="toggleZoom()">Toggle normalized bars</button>
         <div id="loading"></div>
         <svg id="viz" height="550" width="750"></svg>
     </div>

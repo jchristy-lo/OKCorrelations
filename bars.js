@@ -2,12 +2,8 @@ function initializeBarView(category1, category2, zoom) {
     var data = GLOBAL.tabbedData;
     //   document.getElementById("label").innerHTML = category + " breakdown for " + ethnicity;
 
-
     var svg = d3.select("#viz");
     d3.selectAll("#viz > *").remove();
-
-
-
 
     // // create canvas
     // // var svg = d3.select("#viz").append("svg:svg")
@@ -41,8 +37,6 @@ function initializeBarView(category1, category2, zoom) {
 
     var y = d3.scale.linear()
         .range([chartH, 0]);
-
-
 
     var color = d3.scale.category20c();
     //d3.scale.ordinal()
@@ -129,8 +123,6 @@ function initializeBarView(category1, category2, zoom) {
     //         };
     //     })
     // });
-
-
 
     // show the domains of the scales              
     console.log("x.domain(): " + x.domain())

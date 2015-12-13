@@ -2,10 +2,10 @@ window.addEventListener("load", run);
 
 var GLOBAL = {
     data: [],
-    color: ["blue", "red", "darkgrey", "tan", "green", "yellow", "pink", "purple"],
+    color: ["#07408D", "#EA1C53", "#4C7BD9", "#FCBEE0", "green", "red", "darkgrey", "purple"],
     varTypes: {
         "age": "cont",
-        "body": "cat",
+        // "body": "cat",
         "diet": "cat",
         "religion": "cat",
         "drinks": "cat",
@@ -35,14 +35,15 @@ function run() {
         .append("text")
         .text("LOADING!");
     getDataRows(function(data) {
-
         GLOBAL.data = data;
         getWordcount();
         scatterPlot("age", "income");
         document.getElementById("loading").style.display = "none";
-
     });
 
+}
+
+function toggleZoom(){
 }
 
 function tabOn(xvar, yvar) {
@@ -63,13 +64,11 @@ function tabOn(xvar, yvar) {
             }
         }
     });
-
-    console.log(GLOBAL.tabbedData);
     initializeBarView(xvar, yvar, false); //not zoom
 }
 
 function scatterPlot(xvar, yvar) {
-
+	document.getElementById("zoomer").style.display = "none";
     var svg = d3.select("#viz");
     d3.selectAll("#viz > *").remove();
 
@@ -168,9 +167,14 @@ function getWordcount() {
 function sortType(xvar, yvar) {
     if (GLOBAL.varTypes[xvar] === "cont" & GLOBAL.varTypes[yvar] === "cont") {
         scatterPlot(xvar, yvar);
+    } else if (GLOBAL.varTypes[xvar] === "cat" & GLOBAL.varTypes[yvar] === "cont") {
+    	document.getElementById("zoomer").style.display = "inline";
+    	GLOBAL.xSelect = yvar;
+    	GLOBAL.ySelect = xvar;
+        tabOn(yvar, xvar, false);
     } else {
-        tabOn(xvar, yvar);
-
+    	document.getElementById("zoomer").style.display = "inline";
+    	tabOn(xvar, yvar, false);
     }
 }
 
