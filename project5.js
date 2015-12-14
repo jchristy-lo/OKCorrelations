@@ -39,8 +39,19 @@ function run() {
         getWordcount();
         scatterPlot("age", "income");
         document.getElementById("loading").style.display = "none";
+        cleanModifiers();
     });
+}
 
+function cleanModifiers(){
+	GLOBAL.data.forEach(function(profile) {
+		profile["religion"]=profile["religion"].split(' ')[0];
+		profile["diet"]=profile["diet"].replace(/strictly /g, '').replace(/mostly /g, '');
+		profile["education"]=profile["education"].replace(/graduated from /g, '').replace(/working on /g, '').replace(/dropped out of /g, '');
+		if(profile["ethnicity"].indexOf(",")>-1){
+			profile["ethnicity"] = "mixed";
+		}
+    });
 }
 
 function tabOn(xvar, yvar) { //variables are actually mixed up lol but too late
@@ -48,7 +59,11 @@ function tabOn(xvar, yvar) { //variables are actually mixed up lol but too late
     GLOBAL.data.forEach(function(profile) {
         var profY = profile[yvar];
         var profX = profile[xvar];
-        if (profY != "" & profX != "" & profY != undefined & profX != undefined) {
+        if(xvar === "age" ){
+        	profX = Math.ceil(profX/5)*5;
+        	profX = ""+profX+" - "+(+profX+5);
+        }
+        if (profY != "" & profX != "" & profY != undefined & profX != undefined & profY != -1 & profX != -1) {
             if (profY in GLOBAL.tabbedData) {
                 if (profX in GLOBAL.tabbedData[profY]) {
                     GLOBAL.tabbedData[profY][profX] += 1;
@@ -57,10 +72,12 @@ function tabOn(xvar, yvar) { //variables are actually mixed up lol but too late
                 }
             } else {
                 GLOBAL.tabbedData[profY] = {};
+                // if(xvar === "age" ){}
                 GLOBAL.tabbedData[profY][profX] = 1;
             }
         }
     });
+    console.log(GLOBAL.tabbedData);
     initializeBarView(xvar, yvar, false); //not zoom
 }
 
@@ -69,7 +86,7 @@ function scatterPlot(xvar, yvar) {
     d3.selectAll("#viz > *").remove();
 
     var margin = {
-            top: 50,
+            top: 30,
             right: 50,
             bottom: 70,
             left: 70
@@ -90,7 +107,6 @@ function scatterPlot(xvar, yvar) {
     GLOBAL.data.forEach(function(profile) {
         var profY = profile[yvar],
             profX = profile[xvar];
-
         if (profY != "" & profX != "" & profY != undefined & profX != undefined & profY != -1 & profX != -1 & profY != NaN & profX != NaN) {
             xdata.push(+profX);
             ydata.push(+profY);
@@ -108,6 +124,19 @@ function scatterPlot(xvar, yvar) {
             .style("stroke", "none")
             .style("opacity", 0.1);
         i += 1;
+
+        g.on("mouseover",function () {
+			d3.select(this).selectAll("line").style("stroke","red");
+			d3.select(this).selectAll("circle").style("fill","red");
+			d3.select(this).selectAll("circle").style("opacity",1);
+			console.log("HERE");
+		})
+	    .on('mouseout', function() {
+	        d3.select(this).selectAll("line").style("stroke","#104DA1");
+			d3.select(this).selectAll("circle").style("fill","none");
+			d3.select(this).selectAll("circle").style("opacity",0.1);
+			console.log("TTTHERE");
+	    });
     });
 
     var xScale = d3.scale.linear()
@@ -163,10 +192,12 @@ function getWordcount() {
 function sortType(xvar, yvar) {
     if (GLOBAL.varTypes[xvar] === "cont" & GLOBAL.varTypes[yvar] === "cont") {
         scatterPlot(xvar, yvar);
-    } else if (GLOBAL.varTypes[xvar] === "cat" & GLOBAL.varTypes[yvar] === "cont") {
-        GLOBAL.xSelect = xvar;
-        GLOBAL.ySelect = yvar;
-        tabOn(xvar, yvar, false);
+    // } else if (GLOBAL.varTypes[xvar] === "cat" & GLOBAL.varTypes[yvar] === "cont") {
+    //     GLOBAL.ySelect = xvar;
+    //     document.getElementById("changeX").value = xvar;
+    //     GLOBAL.xSelect = yvar;
+    //     document.getElementById("changeY").value = yvar;
+    //     tabOn(yvar, xvar, false);
     } else {
         tabOn(xvar, yvar, false);
     }

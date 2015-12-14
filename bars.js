@@ -134,6 +134,9 @@ function initializeBarView(category1, category2, zoom) {
             .text("Aggregate number of " + category1 + " users (#)");
     }
 
+  
+     var arrayofStuff = Object.keys(GLOBAL.tabbedData[Object.keys(GLOBAL.tabbedData)[0]]);
+  
     for (val in remap) {
 
 
@@ -153,7 +156,7 @@ function initializeBarView(category1, category2, zoom) {
             .attr("y", y(remap[val].y1))
             .attr("height", length)
             .style("fill", function() {
-                return GLOBAL.color[remap[val].iden];
+                return GLOBAL.color[arrayofStuff.indexOf(remap[val].category)]; // this is where coloring is
             })
             .on("click", function() {
                 initializeBarView(category1, category2, !zoom);
@@ -176,7 +179,7 @@ function initializeBarView(category1, category2, zoom) {
             });
 
     }
-    var arrayofStuff = Object.keys(GLOBAL.tabbedData[Object.keys(GLOBAL.tabbedData)[0]]);
+ 
     console.log(arrayofStuff);
     var legend = svg.selectAll(".legend")
         .data(arrayofStuff)
