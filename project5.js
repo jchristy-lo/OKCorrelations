@@ -43,7 +43,7 @@ function run() {
 
 }
 
-function tabOn(xvar, yvar) {
+function tabOn(xvar, yvar) { //variables are actually mixed up lol but too late
     GLOBAL.tabbedData = {};
     GLOBAL.data.forEach(function(profile) {
         var profY = profile[yvar];

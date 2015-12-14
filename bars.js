@@ -1,4 +1,5 @@
 function initializeBarView(category1, category2, zoom) {
+
     var data = GLOBAL.tabbedData;
     //   document.getElementById("label").innerHTML = category + " breakdown for " + ethnicity;
 
@@ -32,8 +33,7 @@ function initializeBarView(category1, category2, zoom) {
         chartW = svg.attr("width") - margin.left - margin.right,
         chartH = svg.attr("height") - margin.top - margin.bottom;
 
-    var x = d3.scale.ordinal()
-        .rangeRoundBands([0, chartW]);
+    var x = d3.scale.ordinal().rangeRoundBands([0, chartW], .1);
 
     var y = d3.scale.linear()
         .range([chartH, 0]);
@@ -105,8 +105,8 @@ function initializeBarView(category1, category2, zoom) {
         // console.log(data[key]);
     }
     //console.log(remap);
-    x.domain(remap.map(function(d) {
-        return d.site;
+    x.domain(Object.keys(GLOBAL.tabbedData).map(function(d) {
+        return d;
     }));
     y.domain([0, d3.max(remap, function(d) {
         return d.y1;
@@ -144,7 +144,7 @@ function initializeBarView(category1, category2, zoom) {
         .call(xAxis)
         .append("text")
         .attr("dy", "3.5em")
-        .text("Reported " + category1 + " frequency");
+        .text("Reported " + category2 + " frequency");
 
     if (zoom) {
         svg.append("g")
@@ -155,7 +155,7 @@ function initializeBarView(category1, category2, zoom) {
             .attr("y", 6)
             .attr("dy", "-5.29em")
             .style("text-anchor", "end")
-            .text("Aggregate percentage of users (%)");
+            .text("Percentage breakdown of " + category1 + " users (%)");
 
     } else {
         svg.append("g")
@@ -166,8 +166,9 @@ function initializeBarView(category1, category2, zoom) {
             .attr("y", 6)
             .attr("dy", "-5.29em")
             .style("text-anchor", "end")
-            .text("Aggregate number of users (#)");
+            .text("Aggregate number of " + category1 + " users (#)");
     }
+
     for (val in remap) {
 
 
@@ -179,7 +180,8 @@ function initializeBarView(category1, category2, zoom) {
         var category = svg
             .append("g")
             .attr("class", "g")
-            .attr("transform", "translate(" + spacing + ",0)");
+            .attr("transform", "translate(" + spacing + ",0)")
+
 
         category
             .append("rect")
@@ -191,6 +193,22 @@ function initializeBarView(category1, category2, zoom) {
             })
             .on("click", function() {
                 initializeBarView(category1, category2, !zoom);
+            })
+            .on('mouseover', function(d) {
+                var nodeSelection = d3.select(this).style({
+                    opacity: '0.8'
+                });
+                nodeSelection.select("text").style({
+                    opacity: '1.0'
+                });
+            })
+            .on('mouseout', function(d) {
+                var nodeSelection = d3.select(this).style({
+                    opacity: '1.0'
+                });
+                nodeSelection.select("text").style({
+                    opacity: '1.0'
+                });
             });
 
     }
@@ -201,7 +219,7 @@ function initializeBarView(category1, category2, zoom) {
         .enter().append("g")
         .attr("class", "legend")
         .attr("transform", function(d, i) {
-            return "translate(0," + i * 20 + ")";
+            return "translate(50," + i * 20 + ")";
         });
 
     legend.append("rect")
