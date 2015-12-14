@@ -164,9 +164,9 @@ function sortType(xvar, yvar) {
     if (GLOBAL.varTypes[xvar] === "cont" & GLOBAL.varTypes[yvar] === "cont") {
         scatterPlot(xvar, yvar);
     } else if (GLOBAL.varTypes[xvar] === "cat" & GLOBAL.varTypes[yvar] === "cont") {
-        GLOBAL.xSelect = yvar;
-        GLOBAL.ySelect = xvar;
-        tabOn(yvar, xvar, false);
+        GLOBAL.xSelect = xvar;
+        GLOBAL.ySelect = yvar;
+        tabOn(xvar, yvar, false);
     } else {
         tabOn(xvar, yvar, false);
     }
