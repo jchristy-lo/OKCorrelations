@@ -135,7 +135,7 @@ function initializeBarView(category1, category2, zoom) {
     }
 
   
-     var arrayofStuff = Object.keys(GLOBAL.tabbedData[Object.keys(GLOBAL.tabbedData)[0]]);
+     var arrayofStuff = Object.keys(GLOBAL.tabbedData[Object.keys(GLOBAL.tabbedData)[0]]).sort();
   
     for (val in remap) {
 

@@ -47,6 +47,7 @@ function cleanModifiers(){
 	GLOBAL.data.forEach(function(profile) {
 		profile["religion"]=profile["religion"].split(' ')[0];
 		profile["diet"]=profile["diet"].replace(/strictly /g, '').replace(/mostly /g, '');
+		profile["offspring"]=profile["offspring"].replace(/doesn&rsquo;t /g, "doesn't ");
 		profile["education"]=profile["education"].replace(/graduated from /g, '').replace(/working on /g, '').replace(/dropped out of /g, '');
 		if(profile["ethnicity"].indexOf(",")>-1){
 			profile["ethnicity"] = "mixed";
@@ -63,6 +64,14 @@ function tabOn(xvar, yvar) { //variables are actually mixed up lol but too late
         	profX = Math.ceil(profX/5)*5;
         	profX = ""+profX+" - "+(+profX+5);
         }
+        if(xvar === "wordcount" ){
+        	profX = Math.floor(profX/250)*250;
+        	profX = ""+profX+" - "+(+profX+250);
+        }
+        if(yvar === "wordcount" ){
+        	profY = Math.floor(profY/250)*250;
+        	profY = ""+profY+" - "+(+profY+250);
+        }
         if (profY != "" & profX != "" & profY != undefined & profX != undefined & profY != -1 & profX != -1) {
             if (profY in GLOBAL.tabbedData) {
                 if (profX in GLOBAL.tabbedData[profY]) {
@@ -72,7 +81,6 @@ function tabOn(xvar, yvar) { //variables are actually mixed up lol but too late
                 }
             } else {
                 GLOBAL.tabbedData[profY] = {};
-                // if(xvar === "age" ){}
                 GLOBAL.tabbedData[profY][profX] = 1;
             }
         }
@@ -187,6 +195,7 @@ function getWordcount() {
             .replace(/ +/g, ' ');
         profile["wordcount"] = profile["allEssays"].split(' ').length;
     });
+    console.log("words counted");
 }
 
 function sortType(xvar, yvar) {
@@ -194,9 +203,9 @@ function sortType(xvar, yvar) {
         scatterPlot(xvar, yvar);
     // } else if (GLOBAL.varTypes[xvar] === "cat" & GLOBAL.varTypes[yvar] === "cont") {
     //     GLOBAL.ySelect = xvar;
-    //     document.getElementById("changeX").value = xvar;
+    //     document.getElementById("#changeX").value = xvar;
     //     GLOBAL.xSelect = yvar;
-    //     document.getElementById("changeY").value = yvar;
+    //     document.getElementById("#changeY").value = yvar;
     //     tabOn(yvar, xvar, false);
     } else {
         tabOn(xvar, yvar, false);
