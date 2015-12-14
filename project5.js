@@ -2,7 +2,7 @@ window.addEventListener("load", run);
 
 var GLOBAL = {
     data: [],
-    color: ["#07408D", "#EA1C53", "#4C7BD9", "#FCBEE0", "green", "red", "darkgrey", "purple"],
+    color: ["#07408D", "#EA1C53", "#4C7BD9", "#FCBEE0", "#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "green", "red", "darkgrey", "purple"],
     varTypes: {
         "age": "cont",
         // "body": "cat",
@@ -164,11 +164,11 @@ function sortType(xvar, yvar) {
     if (GLOBAL.varTypes[xvar] === "cont" & GLOBAL.varTypes[yvar] === "cont") {
         scatterPlot(xvar, yvar);
     } else if (GLOBAL.varTypes[xvar] === "cat" & GLOBAL.varTypes[yvar] === "cont") {
-    	GLOBAL.xSelect = yvar;
-    	GLOBAL.ySelect = xvar;
+        GLOBAL.xSelect = yvar;
+        GLOBAL.ySelect = xvar;
         tabOn(yvar, xvar, false);
     } else {
-    	tabOn(xvar, yvar, false);
+        tabOn(xvar, yvar, false);
     }
 }
 

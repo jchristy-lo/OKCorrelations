@@ -38,9 +38,6 @@ function initializeBarView(category1, category2, zoom) {
     var y = d3.scale.linear()
         .range([chartH, 0]);
 
-    var color = d3.scale.category20c();
-    //d3.scale.ordinal()
-    //    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
     var xAxis = d3.svg.axis()
         .scale(x)
@@ -87,8 +84,7 @@ function initializeBarView(category1, category2, zoom) {
             } else {
                 var val = data[key][cat];
             }
-            console.log(val);
-            console.log(totals[key]);
+
             // data[key][cat] = {
             //     "x": key,
             //     "y0": prev,
@@ -108,7 +104,7 @@ function initializeBarView(category1, category2, zoom) {
         // console.log("post: ");
         // console.log(data[key]);
     }
-    console.log(remap);
+    //console.log(remap);
     x.domain(remap.map(function(d) {
         return d.site;
     }));
@@ -127,45 +123,59 @@ function initializeBarView(category1, category2, zoom) {
 
 
     // show the domains of the scales              
-    console.log("x.domain(): " + x.domain())
-    console.log("y.domain(): " + y.domain())
-    console.log("------------------------------------------------------------------");
+    // console.log("x.domain(): " + x.domain())
+    // console.log("y.domain(): " + y.domain())
+    // console.log("------------------------------------------------------------------");
 
+    // var color = d3.scale.ordinal()
+    //     .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
-    var color = d3.scale.ordinal()
-        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+    // var xAxis = d3.svg.axis()
+    //     .scale(x)
+    //     .orient("bottom");
 
-    var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom");
-
-    var yAxis = d3.svg.axis()
-        .scale(y)
-        .orient("left");
-
+    // var yAxis = d3.svg.axis()
+    //     .scale(y)
+    //     .orient("left");
 
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + chartH + ")")
-        .call(xAxis);
-
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
+        .call(xAxis)
         .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("Accumulated percentage of users (%)");
+        .attr("dy", "3.5em")
+        .text("Reported " + category1 + " frequency");
 
+    if (zoom) {
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", "-5.29em")
+            .style("text-anchor", "end")
+            .text("Aggregate percentage of users (%)");
 
+    } else {
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", "-5.29em")
+            .style("text-anchor", "end")
+            .text("Aggregate number of users (#)");
+    }
     for (val in remap) {
 
-        var spacing = remap[val].x * 100;
 
+        var width = (chartW) / Object.keys(GLOBAL.tabbedData).length;
+        var spacing = remap[val].x * width;
         var length = y(remap[val].y0) - y(remap[val].y1);
-        console.log(svg);
+        // console.log(svg);
+        console.log(width);
         var category = svg
             .append("g")
             .attr("class", "g")
@@ -173,43 +183,46 @@ function initializeBarView(category1, category2, zoom) {
 
         category
             .append("rect")
-            .attr("width", 100)
+            .attr("width", width)
             .attr("y", y(remap[val].y1))
             .attr("height", length)
             .style("fill", function() {
-                return color(remap[val].iden);
+                return GLOBAL.color[remap[val].iden];
             })
             .on("click", function() {
                 initializeBarView(category1, category2, !zoom);
             });
 
     }
-    // //So sorry for this.
-    // var array = color.domain().slice().reverse();
-    // array.pop();
+    var arrayofStuff = Object.keys(GLOBAL.tabbedData[Object.keys(GLOBAL.tabbedData)[0]]);
+    console.log(arrayofStuff);
+    var legend = svg.selectAll(".legend")
+        .data(arrayofStuff)
+        .enter().append("g")
+        .attr("class", "legend")
+        .attr("transform", function(d, i) {
+            return "translate(0," + i * 20 + ")";
+        });
 
-    // var legend = svg.selectAll(".legend")
-    //     .data(array)
-    //     .enter().append("g")
-    //     .attr("class", "legend")
-    //     .attr("transform", function(d, i) {
-    //         return "translate(0," + i * 20 + ")";
-    //     });
+    legend.append("rect")
+        .attr("x", chartW - 18)
+        .attr("width", 18)
+        .attr("height", 18)
+        .style("fill", function(d) {
+            console.log(d);
+            console.log(Object.keys(GLOBAL.tabbedData).indexOf(d));
+            return GLOBAL.color[arrayofStuff.indexOf(d)];
+            // return GLOBAL.color[remap[val].iden];
+        });
 
-    // legend.append("rect")
-    //     .attr("x", chartW - 18)
-    //     .attr("width", 18)
-    //     .attr("height", 18)
-    //     .style("fill", color);
-
-    // legend.append("text")
-    //     .attr("x", chartW - 24)
-    //     .attr("y", 9)
-    //     .attr("dy", ".35em")
-    //     .style("text-anchor", "end")
-    //     .text(function(d) {
-    //         return d;
-    //     });
+    legend.append("text")
+        .attr("x", chartW - 24)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .style("text-anchor", "end")
+        .text(function(d) {
+            return d;
+        });
 
 }
 
