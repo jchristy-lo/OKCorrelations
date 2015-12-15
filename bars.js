@@ -193,13 +193,11 @@ function initializeBarView(category1, category2, zoom) {
 
                 //      nodeSelection[0][0][0].style.display = "block";
 
-
-
             })
             .on('mouseout', function(d) {
                 var thing = this.className["baseVal"];
                 var greying = d3.select(this).style({
-                    opacity: '0.8'
+                    opacity: '1'
                 });
                 var nodeSelection = document.getElementsByClassName(thing)[1].style.display = "none";
 
