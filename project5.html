@@ -1,107 +1,104 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="utf-8">
     <title>Project 5</title>
     <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    
     <script type="text/javascript" src="./project5.js"></script>
     <script type="text/javascript" src="./bars.js"></script>
     <link rel="stylesheet" type="text/css" href="./project5.css">
     <style>
     .d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-}
-
-/* Creates a small triangle extender for the tooltip */
-.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}
-
-/* Style northward tooltips differently */
-.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-}
-</style>
-</head>
-
-<body>
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+    }
+    /* Creates a small triangle extender for the tooltip */
+    .d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+    }
+    /* Style northward tooltips differently */
+    .d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
+    }
+    </style>
+  </head>
+  <body>
     <h1>OkCorrelations</h1>
-    <div id="whitebox">
-    <h2>How are
+    <div id="whitebox" class="container">
+      <h2>Are
+      <label class="dropdown">
         <select name="changeX" onchange="updateX(this)">
-           <option value="age" selected="true"> Age</option>
-           <!-- <option value="body">Body Type</option> -->
-           <option value="diet">Diet</option>
-           <option value="religion">Religion</option>
-           <option value="drinks">Drinking</option>
-           <option value="drugs">Drug Use</option>
-           <option value="education">Education</option>
-           <option value="ethnicity">Ethnicity</option>
-           <option value="height">Height</option>
-           <option value="income">Income</option>
-           <option value="job">Job</option>
-           <option value="offspring">Offspring</option>
-           <option value="orientation">Orientation</option>
-           <option value="pets">Pets</option>
-           <option value="religion">Religion</option>
-           <option value="sex">Sex</option>
-           <option value="smokes">Cigarette Use</option>
-           <!-- <option value="speaks">Languages</option> -->
-           <option value="wordcount">Profile Wordcount</option>
+          <option value="age" selected="true"> Age</option>
+          <!-- <option value="body">Body Type</option> -->
+          <option value="diet">Diet</option>
+          <option value="religion">Religion</option>
+          <option value="drinks">Drinking</option>
+          <option value="drugs">Drug Use</option>
+          <option value="education">Education</option>
+          <option value="ethnicity">Ethnicity</option>
+          <option value="height">Height</option>
+          <option value="income">Income</option>
+          <option value="job">Job</option>
+          <option value="offspring">Offspring</option>
+          <option value="orientation">Orientation</option>
+          <option value="pets">Pets</option>
+          <option value="religion">Religion</option>
+          <option value="sex">Sex</option>
+          <option value="smokes">Cigarette Use</option>
+          <!-- <option value="speaks">Languages</option> -->
+          <option value="wordcount">Profile Wordcount</option>
         </select>
-        and
+      </label>
+      and
+      <label class="dropdown">
         <select name="changeY" onchange="updateY(this)">
-           <option value="age"> Age</option>
-           <!-- <option value="body">Body Type</option> -->
-           <option value="diet">Diet</option>
-           <option value="religion">Religion</option>
-           <option value="drinks">Drinking</option>
-           <option value="drugs">Drug Use</option>
-           <option value="education">Education</option>
-           <option value="ethnicity">Ethnicity</option>
-           <option value="height">Height</option>
-           <option value="income" selected="true">Income</option>
-           <option value="job">Job</option>
-           <option value="offspring">Offspring</option>
-           <option value="orientation">Orientation</option>
-           <option value="pets">Pets</option>
-           <option value="religion">Religion</option>
-           <option value="sex">Sex</option>
-           <option value="smokes">Cigarette Use</option>
-           <!-- <option value="speaks">Languages</option> -->
-           <option value="wordcount">Profile Wordcount</option>
+          <option value="age"> Age</option>
+          <!-- <option value="body">Body Type</option> -->
+          <option value="diet">Diet</option>
+          <option value="religion">Religion</option>
+          <option value="drinks">Drinking</option>
+          <option value="drugs">Drug Use</option>
+          <option value="education">Education</option>
+          <option value="ethnicity">Ethnicity</option>
+          <option value="height">Height</option>
+          <option value="income" selected="true">Income</option>
+          <option value="job">Job</option>
+          <option value="offspring">Offspring</option>
+          <option value="orientation">Orientation</option>
+          <option value="pets">Pets</option>
+          <option value="religion">Religion</option>
+          <option value="sex">Sex</option>
+          <option value="smokes">Cigarette Use</option>
+          <!-- <option value="speaks">Languages</option> -->
+          <option value="wordcount">Profile Wordcount</option>
         </select>
-        correlated?</h2>
-        <div id="loading"></div>
-        <svg id="viz" height="600" width="750"></svg>
-    </div>
-
-    <p>Karina Chan and Jamie Christy, DataViz Fall 2015</p>
-
+      </label>
+      correlated?</h2>
+      <div style="padding: 2%;"><div id="loading">
+      </div></div>
+      
+    <svg id="viz" height="600" width="750"></svg>
+    
+  </div>
+  <p>Karina Chan and Jamie Christy, DataViz Fall 2015</p>
 </body>
-
 </html>

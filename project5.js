@@ -49,9 +49,8 @@ var GLOBAL = {
 }
 
 function run() {
-    d3.select("#loading")
-        .append("text")
-        .text("LOADING!");
+    d3.select("#loading").append("h1").html("LOADING!");
+;
     getDataRows(function(data) {
         GLOBAL.data = data;
         getWordcount();
@@ -139,7 +138,46 @@ function scatterPlot(xvar, yvar) {
             ydata.push(+profY);
         }
     });
+    console.log(xdata);
+    console.log(ydata);
+var xScale = d3.scale.linear()
+        .domain([0, d3.max(xdata)])
+        .range([margin.left, margin.left + chartW]);
 
+    var xAxis = d3.svg.axis();
+    xAxis.orient("bottom")
+        .scale(xScale);
+
+    svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + (chartH + margin.top) + ")")
+        .call(xAxis)
+        .append("text")
+        .text("Scatter plot of "+xvar+" by "+yvar)
+        .attr("transform", "translate("+chartW/2+","+chartH*-1.02+")");
+
+    var yScale = d3.scale.linear()
+        .domain([0, d3.max(ydata)])
+        .range([margin.bottom + chartH, margin.bottom]);
+
+    var yAxis = d3.svg.axis();
+    yAxis.orient("left")
+        .scale(yScale);
+
+
+    svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(" + margin.left + ",-" + (margin.bottom - margin.top) + ")")
+        .call(yAxis);
+
+    svg.append("text")
+        .attr("x", svg.attr("width") / 2)
+        .attr("y", svg.attr("height") - 20)
+        .text(GLOBAL.xSelect);
+
+    svg.append("text")
+        .attr("transform", "translate(10,225)rotate(-90)")
+        .text(GLOBAL.ySelect);
     var i = 0;
     xdata.forEach(function(datum) {
         var g = svg.append("circle")
@@ -166,40 +204,7 @@ function scatterPlot(xvar, yvar) {
 	    });
     });
 
-    var xScale = d3.scale.linear()
-        .domain([0, d3.max(xdata)])
-        .range([margin.left, margin.left + chartW]);
 
-    var xAxis = d3.svg.axis();
-    xAxis.orient("bottom")
-        .scale(xScale);
-
-    svg.append("g")
-        .attr("class", "axis")
-        .attr("transform", "translate(0," + (chartH + margin.top) + ")")
-        .call(xAxis);
-
-    var yScale = d3.scale.linear()
-        .domain([0, d3.max(ydata)])
-        .range([margin.bottom + chartH, margin.bottom]);
-
-    var yAxis = d3.svg.axis();
-    yAxis.orient("left")
-        .scale(yScale);
-
-    svg.append("g")
-        .attr("class", "axis")
-        .attr("transform", "translate(" + margin.left + ",-" + (margin.bottom - margin.top) + ")")
-        .call(yAxis);
-
-    svg.append("text")
-        .attr("x", svg.attr("width") / 2)
-        .attr("y", svg.attr("height") - 20)
-        .text(GLOBAL.xSelect);
-
-    svg.append("text")
-        .attr("transform", "translate(10,225)rotate(-90)")
-        .text(GLOBAL.ySelect);
 
 }
 
