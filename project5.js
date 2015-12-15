@@ -90,6 +90,10 @@ function tabOn(xvar, yvar) { //variables are actually mixed up lol but too late
         	profY = Math.floor(profY/250)*250;
         	profY = profY+250;
         }
+        if(xvar === "height" ){
+        	profX = Math.floor(profX/5)*5;
+        	profX = ""+profX+" - "+(+profX+5)+" in";
+        }
         if (profY != "" & profX != "" & profY != undefined & profX != undefined & profY != -1 & profX != -1) {
             if (profY in GLOBAL.tabbedData) {
                 if (profX in GLOBAL.tabbedData[profY]) {
