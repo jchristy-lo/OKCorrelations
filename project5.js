@@ -26,7 +26,25 @@ var GLOBAL = {
     }, //tags CATegorical or CONTinuous variables
     ySelect: "income",
     xSelect: "age",
-    tabbedData: {}
+    tabbedData: {},
+    wordcountText: 
+    ["0 - 250", 
+    "250 - 500",
+    "500 - 750",
+    "750 - 1000",
+    "1000 - 1250",
+    "1250 - 1500",
+    "1500 - 1750",
+    "1750 - 2000",
+    "2000 - 2250", 
+    "2250 - 2500", 
+    "2500 - 2750", 
+    "2750 - 3000", 
+    "3000 - 3250", 
+    "3500 - 3750", 
+    "4000 - 4250", 
+    "4500 - 4750", 
+    "6500 - 6750"]
 
 }
 
@@ -66,11 +84,12 @@ function tabOn(xvar, yvar) { //variables are actually mixed up lol but too late
         }
         if(xvar === "wordcount" ){
         	profX = Math.floor(profX/250)*250;
-        	profX = ""+profX+" - "+(+profX+250);
+        	//profX = ""+profX+" - "+(+profX+250);
+            profX = profX+250;
         }
         if(yvar === "wordcount" ){
         	profY = Math.floor(profY/250)*250;
-        	profY = ""+profY+" - "+(+profY+250);
+        	profY = profY+250;
         }
         if (profY != "" & profX != "" & profY != undefined & profX != undefined & profY != -1 & profX != -1) {
             if (profY in GLOBAL.tabbedData) {
