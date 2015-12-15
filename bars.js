@@ -197,13 +197,20 @@ function initializeBarView(category1, category2, zoom) {
             .on('mouseout', function(d) {
                 var thing = this.className["baseVal"];
                 var greying = d3.select(this).style({
-                    opacity: '1'
+                    opacity: '1.0'
                 });
                 var nodeSelection = document.getElementsByClassName(thing)[1].style.display = "none";
 
                 //       nodeSelection[0][0][0].style.display = "none";
             })
-        svg.append('text').text(remap[val].category + ": " + length)
+
+        if (zoom){ //if looking at percentage view
+            var unit = "%";
+        } else {
+            var unit = " users";
+        }
+        //console.log("of ["+category2+"], "+ length+unit+" are of ["+category1+"] "+remap[val].category+" type."); //" are of ["+category1+"] "+remap[val].category+" type."
+        svg.append('text').text("of ["+category2+"], "+ length+unit+" are of ["+category1+"] "+remap[val].category+" type.")
             .attr("class", "class" + remap[val].category + "x" + length)
             .attr('fill', 'black')
             .style('display', 'none');

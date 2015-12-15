@@ -6,7 +6,7 @@ body{
 	color: #B3BED5;
 }
 
-h1{
+/*h1{
 	font-size: 16px;
 }
 
@@ -14,7 +14,9 @@ h2{
 	padding: 10px;
 	font-size: 14px;
 	color: #474D59;
-}
+}*/
+
+
 
 div {
     background-color:#ffffff;
@@ -34,3 +36,83 @@ svg text {
     stroke: black;
     shape-rendering: crispEdges;
 }
+
+
+label.dropdown select {
+	padding: 10px 42px 10px 10px;
+	background: #f8f8f8;
+	color: #444;
+	border: 1px solid #aaa;
+	border-radius: 0;
+	display: inline-block;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	cursor: pointer;
+	outline: none;
+}
+label.dropdown select:-moz-focusring {
+	color: transparent;
+	text-shadow: 0 0 0 #444;
+}
+label.dropdown select::-ms-expand {
+	display: none;
+}
+
+label.dropdown { position: relative; }
+
+@media screen {
+	label.dropdown:after {
+		width: 38px;
+		text-indent: 15px;
+        right: 0;
+	}
+}
+@media screen and (min--moz-device-pixel-ratio:0) {
+	label.dropdown select { padding-right: 40px; }
+	label.dropdown:before { right: 6px; }
+	label.dropdown:after {
+		text-indent: 14px;
+		right: 6px;
+		top: -5px;
+		width: 36px;
+	}
+}
+
+
+#loading{
+  position:relative;
+  width:100px;
+  height:100px;
+  margin:25px auto;
+  -moz-border-radius:100px;
+  -moz-transform:scale(0.5);
+  -webkit-transform:scale(0.5);
+
+  /* not used right now: */
+  -webkit-animation-name: rotateThis;
+  -webkit-animation-duration:2s;
+  -webkit-animation-iteration-count:infinite;
+  -webkit-animation-timing-function:linear;
+}
+#loading div{
+  width:10px;
+  height:30px;
+  background:#000;
+  position:absolute;
+  top:35px;
+  left:45px;
+}
+
+/* shadows for the first spinner */
+#loading div {
+  -moz-box-shadow:black 0 0 4px;
+  -webkit-box-shadow:black 0 0 4px
+}
+
+
+@-webkit-keyframes rotateThis {
+  from {-webkit-transform:scale(0.5) rotate(0deg);}
+  to {-webkit-transform:scale(0.5) rotate(360deg);}
+} 
+ 
